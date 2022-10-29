@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mynews_app_clean/core/constants/palette.dart';
+import 'package:mynews_app_clean/features/show_news/presentation/news_view_page.dart';
 import 'features/show_news/presentation/home_page.dart';
 
 void main() {
@@ -13,8 +15,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue,
+          colorScheme: const ColorScheme.light().copyWith(
+            secondary: Palette.deepBlue,
+          ),
+          fontFamily: 'Poppins'),
       home: const HomePage(),
     );
   }

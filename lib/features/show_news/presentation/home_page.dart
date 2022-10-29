@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mynews_app_clean/core/constants/palette.dart';
-import 'package:mynews_app_clean/features/show_news/presentation/components/news_cark.dart';
+import 'package:mynews_app_clean/features/show_news/presentation/components/news_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -26,10 +26,24 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            TextField(
+          children: [
+            const TextField(
+              style: TextStyle(
+                color: Palette.deepBlue,
+                fontSize: 14.0,
+              ),
               cursorColor: Palette.deepBlue,
               decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Palette.lightGrey,
+                  size: 20.0,
+                ),
+                hintText: 'Search',
+                hintStyle: TextStyle(
+                  color: Palette.lightGrey,
+                  fontSize: 14.0,
+                ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Palette.lightGrey,
@@ -44,20 +58,27 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16.0,
             ),
-            Text(
+            const Text(
               'Top News',
               style: TextStyle(
                   color: Palette.deepBlue,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16.0,
             ),
-            NewsCard()
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return const NewsCard();
+                },
+                itemCount: 10,
+              ),
+            )
           ],
         ),
       ),
