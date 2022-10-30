@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mynews_app_clean/core/constants/palette.dart';
-import 'package:mynews_app_clean/features/show_news/presentation/news_view_page.dart';
 import 'features/show_news/presentation/home_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
