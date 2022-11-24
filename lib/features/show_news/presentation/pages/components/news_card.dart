@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mynews_app_clean/core/constants/palette.dart';
-import 'package:mynews_app_clean/features/show_news/presentation/news_view_page.dart';
+import 'package:mynews_app_clean/features/show_news/domain/entities/news_info.dart';
+import 'package:mynews_app_clean/features/show_news/presentation/pages/news_view_page.dart';
 
 class NewsCard extends StatelessWidget {
-  const NewsCard({super.key});
+  final NewsInfo newsInfo;
+  const NewsCard({super.key, required this.newsInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class NewsCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            return const NewsViewPage();
+            return NewsViewPage(newsInfo: newsInfo);
           }),
         );
       }),
@@ -26,10 +28,12 @@ class NewsCard extends StatelessWidget {
               Container(
                 height: 260.0,
                 color: Palette.lightGrey,
-                child: Image.network(
-                  'https://elements-cover-images-0.imgix.net/0f478ac6-76ca-4281-a339-a5d08004ad87?auto=compress%2Cformat&fit=max&w=1370&s=ee5a0253b0c57f7dcc81151b0d1ee18c',
-                  fit: BoxFit.cover,
-                ),
+                child: newsInfo.imageURL != null
+                    ? Image.network(
+                        newsInfo.imageURL!,
+                        fit: BoxFit.cover,
+                      )
+                    : const SizedBox(),
               ),
               Positioned(
                 left: 16.0,
@@ -46,13 +50,15 @@ class NewsCard extends StatelessWidget {
                           color: Colors.black12),
                     ],
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
                     child: Center(
                       child: Text(
-                        'News Title',
+                        newsInfo.title != null
+                            ? newsInfo.title!
+                            : '-- No title --',
                         maxLines: 2,
-                        style: TextStyle(
+                        style: const TextStyle(
                           overflow: TextOverflow.ellipsis,
                           color: Palette.deepBlue,
                           fontSize: 18,

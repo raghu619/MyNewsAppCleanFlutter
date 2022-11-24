@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mynews_app_clean/core/constants/palette.dart';
-import 'package:mynews_app_clean/features/show_news/presentation/components/news_card.dart';
+import 'package:mynews_app_clean/features/show_news/presentation/news_cubit/news_cubit.dart';
+import 'package:mynews_app_clean/features/show_news/presentation/pages/components/news_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<NewsCubit>().fetchNews(null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +85,23 @@ class HomePage extends StatelessWidget {
               height: 16.0,
             ),
             Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return const NewsCard();
+              child: BlocBuilder<NewsCubit, NewsState>(
+                builder: (context, state) {
+                  if (state is NewsInitial) {
+                    return ListView.builder(
+                      itemCount: state.news.length,
+                      itemBuilder: (context, index) {
+                        return NewsCard(newsInfo: state.news[index]);
+                      },
+                    );
+                  } else if (state is NewsLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Palette.deepBlue),
+                    );
+                  } else {
+                    return const Center(child: Text('Error'));
+                  }
                 },
-                itemCount: 10,
               ),
             )
           ],

@@ -2,7 +2,6 @@ import 'package:mynews_app_clean/core/failures_successes/exceptions.dart';
 import 'package:mynews_app_clean/core/services/api_service.dart';
 import 'package:mynews_app_clean/core/services_locator.dart';
 import 'package:mynews_app_clean/features/show_news/data/models/news_info_model.dart';
-
 import '../../../../core/constants/Strings.dart';
 
 abstract class FetchFromRemoteDS {
@@ -33,7 +32,6 @@ class FetchFromRemoteDSImpl implements FetchFromRemoteDS {
         NewsInfoModel newsInfoModel = NewsInfoModel.fromMap(mapList[i]);
         news.add(newsInfoModel);
       }
-
       return news;
     } catch (e) {
       throw const FetchException(message: 'Failed to get data');

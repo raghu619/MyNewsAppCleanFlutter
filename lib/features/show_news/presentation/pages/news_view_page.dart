@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mynews_app_clean/core/constants/palette.dart';
+import 'package:mynews_app_clean/features/show_news/domain/entities/news_info.dart';
 
 class NewsViewPage extends StatelessWidget {
-  const NewsViewPage({super.key});
+  final NewsInfo newsInfo;
+
+  const NewsViewPage({super.key, required this.newsInfo});
+
+  String _getDateInDDMMYYFormat(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +39,9 @@ class NewsViewPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Title',
-                style: TextStyle(
+              Text(
+                newsInfo.title != null ? newsInfo.title! : '-- No title --',
+                style: const TextStyle(
                   color: Palette.deepBlue,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -46,17 +53,19 @@ class NewsViewPage extends StatelessWidget {
               Container(
                 height: 300,
                 color: Palette.lightGrey,
-                child: Image.network(
-                  'https://elements-cover-images-0.imgix.net/0f478ac6-76ca-4281-a339-a5d08004ad87?auto=compress%2Cformat&fit=max&w=1370&s=ee5a0253b0c57f7dcc81151b0d1ee18c',
-                  fit: BoxFit.cover,
-                ),
+                child: newsInfo.imageURL != null
+                    ? Image.network(
+                        newsInfo.imageURL!,
+                        fit: BoxFit.cover,
+                      )
+                    : const SizedBox(),
               ),
               const SizedBox(
                 height: 16,
               ),
-              const Text(
-                '8/8/2022',
-                style: TextStyle(
+              Text(
+                _getDateInDDMMYYFormat(newsInfo.dateTime),
+                style: const TextStyle(
                   color: Palette.lightGrey,
                   fontSize: 14,
                 ),
@@ -64,9 +73,9 @@ class NewsViewPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              const Text(
-                'Author name, Publisher name',
-                style: TextStyle(
+              Text(
+                newsInfo.author != null ? newsInfo.author! : '-- No Author --',
+                style: const TextStyle(
                   color: Palette.lightGrey,
                   fontSize: 14,
                 ),
@@ -74,17 +83,11 @@ class NewsViewPage extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              const Text(
-                '''Lorem ipsum, or lipsum as it is sometimes known, 
-                is dummy text used in laying out print, graphic or web designs. 
-                The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's 
-                De Finibus Bonorum et Malorum for use in a type specimen book. 
-                It usually begins with:Lorem ipsum, or lipsum as it is sometimes known, 
-                is dummy text used in laying out print, graphic or web designs. 
-                The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's 
-                De Finibus Bonorum et Malorum for use in a type specimen book. 
-                It usually begins with:''',
-                style: TextStyle(
+              Text(
+                newsInfo.content != null
+                    ? newsInfo.content!
+                    : '-- No CONTENT --',
+                style: const TextStyle(
                   color: Palette.deepBlue,
                   fontSize: 14,
                 ),

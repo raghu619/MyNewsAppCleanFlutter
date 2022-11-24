@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynews_app_clean/core/constants/palette.dart';
 import 'package:mynews_app_clean/core/services_locator.dart';
-import 'features/show_news/presentation/home_page.dart';
+import 'package:mynews_app_clean/features/show_news/presentation/news_cubit/news_cubit.dart';
+import 'features/show_news/presentation/pages/home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,15 +16,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          colorScheme: const ColorScheme.light().copyWith(
-            secondary: Palette.deepBlue,
-          ),
-          fontFamily: 'Poppins'),
-      home: const HomePage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) {
+          return NewsCubit();
+        }),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primarySwatch: Colors.blue,
+            colorScheme: const ColorScheme.light().copyWith(
+              secondary: Palette.deepBlue,
+            ),
+            fontFamily: 'Poppins'),
+        home: const HomePage(),
+      ),
     );
   }
 }
