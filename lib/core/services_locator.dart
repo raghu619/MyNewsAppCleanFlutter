@@ -5,10 +5,12 @@ import 'package:mynews_app_clean/features/show_news/domain/repositories/fetch_re
 import 'package:mynews_app_clean/features/show_news/domain/usecases/fetch_news.dart';
 
 import '../features/show_news/data/repositories/fetch_repo_impl.dart';
+import 'package:dio/dio.dart';
 
 final GetIt sl = GetIt.asNewInstance();
 
 void setUpServices() {
+  sl.registerSingleton<Dio>(Dio());
   sl.registerSingleton<ApiService>(ApiServiceImpl());
   sl.registerSingleton<FetchFromRemoteDS>(FetchFromRemoteDSImpl());
   sl.registerSingleton<FetchRepo>(FetchRepoImpl());
