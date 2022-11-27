@@ -40,13 +40,20 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TextField(
-              style: TextStyle(
+            TextField(
+              onSubmitted: (searchText) {
+                if (searchText.trim() == '') {
+                  context.read<NewsCubit>().fetchNews(null);
+                } else {
+                  context.read<NewsCubit>().fetchNews(searchText);
+                }
+              },
+              style: const TextStyle(
                 color: Palette.deepBlue,
                 fontSize: 14.0,
               ),
               cursorColor: Palette.deepBlue,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
                   color: Palette.lightGrey,
@@ -74,13 +81,27 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 16.0,
             ),
-            const Text(
-              'Top News',
-              style: TextStyle(
-                  color: Palette.deepBlue,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
+            BlocBuilder<NewsCubit, NewsState>(builder: (context, state) {
+              if (state is NewsInitial) {
+                return const Text(
+                  'Top News',
+                  style: TextStyle(
+                      color: Palette.deepBlue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                );
+              } else if (state is NewsInitialSearch) {
+                return const Text(
+                  'Searched News',
+                  style: TextStyle(
+                      color: Palette.deepBlue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                );
+              } else {
+                return const SizedBox();
+              }
+            }),
             const SizedBox(
               height: 16.0,
             ),
@@ -94,12 +115,30 @@ class _HomePageState extends State<HomePage> {
                         return NewsCard(newsInfo: state.news[index]);
                       },
                     );
+                  } else if (state is NewsInitialSearch) {
+                    return ListView.builder(
+                      itemCount: state.news.length,
+                      itemBuilder: (context, index) {
+                        return NewsCard(newsInfo: state.news[index]);
+                      },
+                    );
                   } else if (state is NewsLoading) {
                     return const Center(
                       child: CircularProgressIndicator(color: Palette.deepBlue),
                     );
                   } else {
-                    return const Center(child: Text('Error'));
+                    return Center(
+                      child: IconButton(
+                        onPressed: () {
+                          context.read<NewsCubit>().fetchNews(null);
+                        },
+                        icon: const Icon(
+                          Icons.replay_outlined,
+                          color: Palette.deepBlue,
+                          size: 24,
+                        ),
+                      ),
+                    );
                   }
                 },
               ),

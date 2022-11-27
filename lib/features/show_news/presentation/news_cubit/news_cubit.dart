@@ -20,7 +20,11 @@ class NewsCubit extends Cubit<NewsState> {
     fetchNewsResult.fold((l) {
       emit(NewsError());
     }, (news) {
-      emit(NewsInitial(news: news));
+      if (searchText != null) {
+        emit(NewsInitialSearch(news: news));
+      } else {
+        emit(NewsInitial(news: news));
+      }
     });
   }
 }
